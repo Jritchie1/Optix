@@ -9,6 +9,12 @@ interface HeadCell {
   
 export const tableHeaders: readonly HeadCell[] = [
 {
+    id: 'id',
+    numeric: false,
+    disablePadding: false,
+    label: 'ID',
+},
+{
     id: 'title',
     numeric: false,
     disablePadding: false,

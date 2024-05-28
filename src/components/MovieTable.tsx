@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { alpha } from '@mui/material/styles';
-import { Box, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Toolbar, Typography, Paper} from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow, Paper} from '@mui/material';
 import { useState } from 'react';
-import { FormattedMovie, Movie, DataState, Order } from '../types/data';
+import { FormattedMovie, DataState, Order } from '../types/data';
 import { TableHeader } from './fragments/TableHeaders';
 import { Row } from './fragments/TableRow';
 import { BasicModal } from './Modal';
@@ -60,7 +59,7 @@ export function MovieTable(props: {
 
   const visibleRows = React.useMemo(
     () =>
-      movies.slice().sort(GetComparator(order, orderBy)),
+      movies.slice(page * rowsPerPage, (page + 1) * rowsPerPage).sort(GetComparator(order, orderBy)),
     [order, orderBy, page, rowsPerPage],
   ); 
 
@@ -104,7 +103,6 @@ export function MovieTable(props: {
               )}
             </TableBody>
           </Table>
-        </TableContainer>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -114,6 +112,7 @@ export function MovieTable(props: {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
+        </TableContainer>
         <BasicModal
           {...modal} currentRow={currentRow}
         />

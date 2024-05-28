@@ -26,6 +26,9 @@ export function Row(props: RowProps) {
       selected={isItemSelected}
       sx={{ cursor: "pointer" }}
     >
+      <TableCell component="th" id={labelId} scope="row" padding="none" sx={{textAlign: 'right'}}>
+        {row.id}
+      </TableCell>
       <TableCell align="right">{row.title}</TableCell>
       <TableCell align="right">{row.averageReview}</TableCell>
       <TableCell align="right">{row.filmCompany}</TableCell>

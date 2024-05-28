@@ -1,48 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Movie, DataState, FormattedMovie, MovieCompany, RawDataState, ErrorMessage } from './types/data';
+import { DataState, RawDataState, ErrorMessage } from './types/data';
 import { MovieTable } from './components/MovieTable';
-import { Typography, Paper, Box, Button } from '@mui/material';
+import { Typography, Paper, Button } from '@mui/material';
 import { fetchData } from './utility/dataMethods';
 import { NotificationToast } from './components/NotificationToast';
 import { ModalProps } from './types/modal';
-
-const calculateAverageReview = (reviews: number[]): number => {
-  return Number((reviews.reduce((previous, current) => previous + current, 0)/reviews.length).toFixed(1));
-}
-
-const getFilmCompanyName = (filmCompanyId: string, filmCompanies: MovieCompany[]): string => {
-  const companyName = filmCompanies.find(({id}) => id === filmCompanyId)?.name;
-  if (companyName) {
-    return companyName;
-  }
-  else {
-    return 'Unknown';
-  }
-}
-
-const formatMovies = (movies: Movie[], movieCompanies: MovieCompany[]): FormattedMovie[] => {
-  if (movies) {
-    return movies.map((movie) => {
-      const averageReview = calculateAverageReview(movie.reviews);
-      const filmCompany = getFilmCompanyName(movie.filmCompanyId, movieCompanies);
-      return {
-        ...movie,
-        averageReview: averageReview,
-        filmCompany: filmCompany
-      };
-    })
-  }
-  else {
-    return [];
-  }
-}
-
-const formatData = (data: RawDataState): DataState => {
-  return {
-    ...data,
-    movies: formatMovies(data.movies, data.movieCompanies)
-  };
-}
+import { formatData } from './utility/otherMethods';
 
 export const App = () =>  {
   const [data, setData] = useState<DataState>({movies: [], movieCompanies: []});
@@ -51,6 +14,7 @@ export const App = () =>  {
   const [notificationMessage, setNotificationMessage] = useState<string>();
   const [modalOpen, setModalOpen] = useState(false);
 
+  // Below methods would be candidates to be put into a resolvers file
   const handleModalOpen = () => {
     setModalOpen(true);
   }
@@ -123,7 +87,7 @@ export const App = () =>  {
   }
   else {
     return (
-      <Box sx={{ width: '100%', m: 1 }}>
+      <div style={{margin: 5}}>
         <Paper sx={{ width: '100%' }}>
             <Typography id="response-code" variant="h6" component="h2" sx={{ m: 2 }}>
               {error?.status}
@@ -135,7 +99,7 @@ export const App = () =>  {
               Reload Data
             </Button>
         </Paper>
-      </Box>
+      </div>
     )
   }
 }

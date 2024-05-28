@@ -47,6 +47,7 @@ export const fetchData = (
 };
 
 export const sendRequest = (
+  reviewText: string,
   setNotificationMessage: (
     value: React.SetStateAction<string | undefined>
   ) => void,
@@ -65,13 +66,12 @@ export const sendRequest = (
           Accept: "application/json, text/plain, */*",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ a: 7, str: "Some string: &=&" }),
+        body: reviewText,
       })
         .then((res) => {
           status = res.status;
           text = res.statusText;
           setNotificationMessage("Review sent.  Thank you for your response!");
-          //handleClose();
           handleNotificationOpen();
           handleClose();
           return res.json();
